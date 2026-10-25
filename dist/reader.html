@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="referrer" content="no-referrer"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1b513d"><meta name="description" content="A mobile reader for public Airtable Record review pages.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>Record Review Mobile</title>
+<style>
+*{box-sizing:border-box}html,body{width:100%;height:100%;margin:0;overflow:hidden;font:14px/1.4 system-ui,sans-serif;background:#f4f8f2;color:#1b513d}body{height:100dvh;display:flex;flex-direction:column}a{color:inherit}button,input,select,a{touch-action:manipulation}button{font:600 14px system-ui;min-height:46px;border:1px solid #c4d1c5;border-radius:11px;background:white;color:#1b513d;cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #c49048;outline-offset:2px}button:disabled{opacity:.4;cursor:default}
+header{flex:none;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 16px;border-bottom:1px solid #d6e1d5;background:#f4f8f2}.brand{display:flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap;font-size:16px;font-weight:750;letter-spacing:-.04em}.brand-mark{display:grid;place-items:center;width:28px;height:28px;background:#1b513d;color:#fff;border-radius:8px;font-size:12px;letter-spacing:-.06em}.links{display:flex;align-items:center;gap:12px;font-size:12px;flex:none}.links .icon-button{display:inline-flex;align-items:center;justify-content:center;flex:none;width:36px;min-height:40px;padding:0;border:0;border-radius:9px;background:transparent;color:inherit}.links .icon-button:hover,.language:hover{background:#e3edde}.language{flex:none;min-width:44px;min-height:36px;padding:4px 7px;font-size:11px;letter-spacing:.04em;background:transparent;border-color:#cddacc;border-radius:8px}.text-button{border:0;min-height:36px;background:transparent;padding:0;font-size:12px;font-weight:400;text-decoration:underline;text-underline-offset:2px}.links #guide-link,.links #settings-link{display:inline-flex;align-items:center;justify-content:center;flex:0 0 56px;width:56px;min-height:40px;white-space:nowrap}.links .language{width:44px}
+#viewport{position:relative;flex:1;min-height:0;overflow:hidden;overflow:clip;background:white}iframe{position:absolute;top:0;height:100%;width:calc(100% + 360px);border:0;max-width:none;left:-360px;background:#fff}body[data-mode="list"] iframe{left:0}body[data-mode="list"] #list-mask{position:absolute;left:360px;right:0;top:0;bottom:0;background:#fff;pointer-events:none}nav{flex:none;display:flex;gap:9px;padding:10px 12px calc(10px + env(safe-area-inset-bottom));border-top:1px solid #d6e1d5;background:#f4f8f2}nav button{flex:1;font-size:15px}nav button[aria-pressed=true]{background:#1b513d;color:white;border-color:#1b513d}
+.menu{position:absolute;z-index:3;left:12px;right:12px;top:12px;padding:20px;background:#fff;box-shadow:0 6px 35px #102e1933;border:1px solid #c4d1c5;border-radius:14px;font-size:13px;line-height:1.75;max-height:calc(100% - 24px);overflow-y:auto}.menu[hidden]{display:none}.menu h1{font-size:18px;line-height:1.4;margin:0 0 8px}.menu p{color:#54705d;margin:10px 0}.menu button{margin-top:10px;min-height:40px;width:100%}.menu label{display:block;margin:15px 0 6px;font-weight:600}.menu select,.menu input{width:100%;padding:10px;font:13px system-ui;border:1px solid #c4d1c5;border-radius:8px;background:white;color:#1b513d}.menu select{max-width:230px}.menu hr{border:0;border-top:1px solid #e2e8e1;margin:20px 0}.menu .source-original[hidden]{display:none}.menu .source-original{display:inline-block;margin-top:12px;font-size:12px;text-underline-offset:3px}.menu .language-note{font-size:12px;line-height:1.65}.menu .open-button{background:#1b513d;color:white;border-color:#1b513d}#source-error{color:#a13226}#share-status{font-size:12px;color:#466a51}#loading{position:absolute;top:12px;left:12px;z-index:2;padding:10px 14px;border-radius:10px;background:#f4f8f2;border:1px solid #c4d1c5;font-size:13px;max-width:calc(100% - 24px);pointer-events:none}#loading[hidden]{display:none}
+@media(min-width:1000px){header,nav{padding-left:max(16px,calc((100vw - 950px)/2));padding-right:max(16px,calc((100vw - 950px)/2))}}@media(max-width:520px){header{padding:7px 12px}.brand-name{display:none}.links{gap:10px}}@media(max-width:359px){header{padding:7px 10px}.links{gap:8px}nav{gap:6px;padding:8px}}
+</style>
+</head>
+<body data-mode="detail">
+<header>
+  <a class="brand" href="index.html" data-i18n-aria="nav.home"><span class="brand-mark" aria-hidden="true">RR</span><span class="brand-name">Record Review Mobile</span></a>
+  <div class="links">
+    <button id="reload" class="icon-button" type="button" data-i18n-aria="nav.refresh" data-i18n-title="nav.refresh"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 7v5h-5"/><path d="M19.1 12a7.5 7.5 0 1 0-1.9 5.2"/><path d="m20 12-2.6-3.1"/></svg></button>
+    <button class="language" type="button" data-language-toggle>KOR</button>
+    <a id="guide-link" href="index.html#how" data-i18n="nav.guide">사용법</a>
+    <button id="settings-link" class="text-button" type="button" aria-controls="settings" aria-expanded="false" data-i18n="nav.settings">설정</button>
+  </div>
+</header>
+<main id="viewport">
+  <iframe title="Airtable 공개 Interface" id="airtable" allow="fullscreen" referrerpolicy="no-referrer"></iframe>
+  <div id="list-mask" aria-hidden="true"></div>
+  <div id="loading" role="status" data-i18n="reader.loading">Interface를 불러오는 중…</div>
+  <section class="menu" id="settings" aria-labelledby="settings-title" hidden>
+    <h1 id="settings-title" data-i18n="settings.title">Reader 설정</h1>
+    <p data-i18n="settings.zoomHint">글이 작거나 잘리면 보기 배율을 조절하세요.</p>
+    <label for="scale" data-i18n="settings.zoom">보기 배율</label>
+    <select id="scale"><option value="1" data-i18n="settings.zoom100">기본 · 100%</option><option value="0.85" data-i18n="settings.zoom85">넓게 · 85%</option><option value="0.7" data-i18n="settings.zoom70">더 넓게 · 70%</option></select>
+    <hr>
+    <form id="source-form" novalidate>
+      <label for="source-url" data-i18n="settings.source">공개 Record review 링크</label>
+      <input id="source-url" name="url" type="url" required placeholder="https://airtable.com/app…/shr…" autocomplete="off" spellcheck="false">
+      <p id="source-error" role="alert" hidden></p>
+      <button class="open-button" type="submit" data-i18n="settings.open">이 링크로 열기</button>
+      <a class="source-original" id="original-link" hidden target="_blank" rel="noopener noreferrer" data-i18n="settings.original">원본 Interface 열기 ↗</a>
+      <label for="share-url" data-i18n="settings.share">공유 링크</label>
+      <input id="share-url" readonly spellcheck="false">
+      <button id="copy-share" type="button" data-i18n="settings.copy">링크 복사</button>
+      <p id="share-status" role="status" aria-live="polite"></p>
+    </form>
+    <p class="language-note" data-i18n="settings.languageNote">언어 전환은 Reader 메뉴에만 적용됩니다. Airtable 원문은 그대로 표시됩니다.</p>
+    <button id="close-settings" type="button" data-i18n="settings.done">닫기</button>
+  </section>
+</main>
+<nav data-i18n-aria="nav.views"><button id="list" aria-pressed="false" data-i18n="nav.list">목록</button><button id="detail" aria-pressed="true" data-i18n="nav.details">상세</button></nav>
+<script type="module">
+import { resolveSource, shareUrl } from './source-url.mjs';
+import { initLanguage } from './i18n.mjs';
+const locale=initLanguage();
+const frame=document.getElementById('airtable'),port=document.getElementById('viewport'),settings=document.getElementById('settings');
+const input=document.getElementById('source-url'),shared=document.getElementById('share-url'),error=document.getElementById('source-error'),loading=document.getElementById('loading');
+const settingsToggle=document.getElementById('settings-link');
+let source=null,errorCode=null,shareStatus=null;
+function setSettings(open){settings.hidden=!open;settingsToggle.setAttribute('aria-expanded',String(open));}
+function renderDynamic(){
+  document.title=locale.t('reader.title');document.querySelector('meta[name="description"]').content=locale.t('reader.description');frame.title=locale.t('reader.frame');
+  error.hidden=!errorCode;if(errorCode)error.textContent=locale.t('error.'+errorCode);
+  if(!source)loading.textContent=locale.t('reader.invalid');
+  document.getElementById('share-status').textContent=shareStatus?locale.t(shareStatus):'';
+}
+try{source=resolveSource(location.search)}catch(e){errorCode=e.code??'invalidUrl';setSettings(true);frame.hidden=true;document.getElementById('original-link').hidden=true;}
+if(!source&&!errorCode){loading.hidden=true;frame.hidden=true;location.replace(new URL('index.html',location.href).href);}
+input.value=source?.original??new URLSearchParams(location.search).get('url')??'';
+if(source){
+  document.getElementById('original-link').hidden=false;document.getElementById('original-link').href=source.original;shared.value=shareUrl(location.href,source.original);
+  const guide=new URL('index.html',location.href);guide.searchParams.set('url',source.original);guide.hash='how';document.getElementById('guide-link').href=guide.href;
+  if(source.custom)document.querySelector('link[rel="manifest"]')?.remove();
+}
+locale.onChange(renderDynamic);renderDynamic();
+const EMBED_FOOTER_HEIGHT=24;
+document.getElementById('reload').disabled=!source;
+let scale=1;try{const saved=Number(localStorage.getItem('record-review-mobile-scale'));if([1,.85,.7].includes(saved))scale=saved}catch{}
+function fit(){const w=port.clientWidth,h=port.clientHeight;const effective=document.body.dataset.mode==='list'?Math.min(1.15,w/360):scale;frame.style.width=(w/effective+360)+'px';frame.style.height=(h/effective+EMBED_FOOTER_HEIGHT)+'px';frame.style.transform='scale('+effective+')';frame.style.transformOrigin='0 0';frame.style.left=document.body.dataset.mode==='list'?'0':(-360*effective)+'px';document.getElementById('list-mask').style.left=(360*effective)+'px';}
+function mode(value){document.body.dataset.mode=value;for(const v of ['list','detail'])document.getElementById(v).setAttribute('aria-pressed',String(v===value));fit();}
+document.getElementById('list').onclick=()=>mode('list');document.getElementById('detail').onclick=()=>mode('detail');
+settingsToggle.onclick=()=>setSettings(settings.hidden);document.getElementById('close-settings').onclick=()=>setSettings(false);
+document.getElementById('scale').value=String(scale);document.getElementById('scale').onchange=e=>{scale=Number(e.target.value);try{localStorage.setItem('record-review-mobile-scale',String(scale))}catch{}fit();};
+frame.addEventListener('load',()=>{if(source){loading.hidden=true;fit();}});
+document.getElementById('reload').onclick=()=>{if(source){loading.hidden=false;frame.src=source.embed;setSettings(false);}};
+document.getElementById('source-form').onsubmit=e=>{e.preventDefault();try{const target=shareUrl(location.href,input.value);errorCode=null;location.assign(target);}catch(e){errorCode=e.code??'invalidUrl';renderDynamic();input.focus();}};
+document.getElementById('copy-share').onclick=async()=>{if(!shared.value)return;try{await navigator.clipboard.writeText(shared.value);shareStatus='settings.copied';}catch{shared.focus();shared.select();shareStatus='settings.copyFallback';}renderDynamic();};
+input.addEventListener('input',()=>{try{shared.value=shareUrl(location.href,input.value);errorCode=null;}catch{shared.value='';}shareStatus=null;renderDynamic();});
+if(source)frame.src=source.embed;
+new ResizeObserver(fit).observe(port);mode('detail');
+</script>
+</body></html>

@@ -1,0 +1,1 @@
+{"id": "/reader.html", "name": "Record Review Mobile", "short_name": "RR Mobile", "start_url": "/reader.html", "scope": "/", "display": "standalone", "theme_color": "#1b513d", "background_color": "#f4f8f2", "icons": [{"src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}]}

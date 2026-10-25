@@ -1,0 +1,16 @@
+.DS_Store
+node_modules/
+.env
+.env.*
+!.env.example
+.sites-runtime/
+backups/
+*.tar.gz
+*.bundle
+**/.gradle/
+**/build/
+android/local.properties
+*.keystore
+*.jks
+*.zip
+.openai/hosting.json
