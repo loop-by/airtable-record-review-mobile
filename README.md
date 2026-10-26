@@ -25,19 +25,22 @@ node --test source-url.test.mjs
 
 Open `http://127.0.0.1:4173/`. No dependencies or build step are required.
 
+## GitHub Pages
+
+The workflow in `.github/workflows/deploy-pages.yml` publishes `dist/` to GitHub Pages whenever a commit reaches `main`. In the repository's Pages settings, set the build and deployment source to **GitHub Actions**. The deployment adjusts the web app manifest paths for either a project-site URL or a custom domain.
+
 ## Files
 
 - `dist/`: static website
 - `source-url.test.mjs`: URL handling tests, using synthetic data
-- `android/`: unbuilt Android WebView prototype
 - `experiments/`: optional layout experiments
 - `PRODUCT.md`, `VERIFICATION.md`, `SECURITY_REVIEW.md`: scope, verification and security notes
 - `.openai/hosting.example.json`: generic static-hosting example
 
-Personal deployment configuration is excluded from the GitHub source snapshot. Set up your own hosting target before deployment. API keys, credentials and real interface URLs do not belong in the repository.
+Personal deployment configuration is excluded from the GitHub source snapshot. API keys, credentials and real interface URLs do not belong in the repository.
 
 ## Limits
 
-The layout assumes a 360px record-list sidebar. Other Airtable layouts may need changes. The wrapper cannot inspect the cross-origin iframe or automatically detect record selection. Users must switch to Details after choosing a record. Mobile-device compatibility and the Android prototype require separate testing.
+The layout assumes a 360px record-list sidebar. Other Airtable layouts may need changes. The wrapper cannot inspect the cross-origin iframe or automatically detect record selection. Users must switch to Details after choosing a record. Mobile-browser compatibility still needs testing on real devices.
 
 The wrapper is independent of Airtable. See `SECURITY_REVIEW.md` before operating it for other users.

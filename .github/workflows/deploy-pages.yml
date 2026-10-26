@@ -1,0 +1,61 @@
+name: Deploy static site to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare static site
+        env:
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          mkdir -p _site
+          cp -a dist/. _site/
+          BASE_PATH="$BASE_PATH" node --input-type=module <<'NODE'
+          import { readFile, writeFile } from 'node:fs/promises';
+
+          const manifestPath = '_site/manifest.webmanifest';
+          const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
+          const basePath = (process.env.BASE_PATH || '').replace(/^\/+|\/+$/g, '');
+          const scope = basePath ? `/${basePath}/` : '/';
+          const readerPath = `${scope}reader.html`;
+
+          manifest.id = readerPath;
+          manifest.start_url = readerPath;
+          manifest.scope = scope;
+
+          await writeFile(manifestPath, `${JSON.stringify(manifest)}\n`);
+          NODE
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

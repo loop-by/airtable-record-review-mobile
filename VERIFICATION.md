@@ -16,4 +16,4 @@ No original records, personal interface URLs, screenshots or source-specific tes
 
 ## Limits
 
-Actual mobile hardware and the Android APK have not been verified. Synthetic-URL checks verify URL handling, not the availability of an actual Airtable interface. Hosting and security findings are recorded separately in `SECURITY_REVIEW.md`.
+Actual mobile-browser behavior has not been verified on physical devices. Synthetic-URL checks verify URL handling, not the availability of an actual Airtable interface. Hosting and security findings are recorded separately in `SECURITY_REVIEW.md`.

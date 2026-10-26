@@ -17,4 +17,3 @@ No default interface, account system, payment system, analytics integration, API
 - Test several independent public interfaces and mobile browsers.
 - Improve feedback for failed, revoked or blocked embeds.
 - Address the remaining privacy and hosting controls in `SECURITY_REVIEW.md`.
-- Verify the Android prototype separately before distributing an app.
